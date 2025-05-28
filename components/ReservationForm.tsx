@@ -63,7 +63,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     const order: Order = {
       ...data,
       vin: car.vin,
-      status: 'pending',
     };
 
     const res = await fetch('/api/orders', {

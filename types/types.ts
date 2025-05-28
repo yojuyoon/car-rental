@@ -20,5 +20,4 @@ export interface Order {
   licenseNumber: string;
   startDate: string;
   rentalDays: number;
-  status: 'pending' | 'confirmed';
 }
