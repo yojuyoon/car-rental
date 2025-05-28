@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Car } from '../types/types';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
@@ -9,6 +9,7 @@ import Banner from '@/components/Banner';
 import Loading from '@/components/Loading';
 
 const HomePage = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
@@ -54,9 +55,13 @@ const HomePage = () => {
     setFilteredCars(result);
   }, [keyword, brand, carType, cars]);
 
+  const handleScroll = () => {
+    targetRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="mx-auto py-8">
-      <Banner />
+      <Banner handleScroll={handleScroll} />
       <div className="max-w-6xl mx-auto mt-10">
         <h1 className="text-2xl text-sky-700 font-bold mb-4">Available Cars</h1>
         <SearchBar keyword={keyword} onKeywordChange={setKeyword} cars={cars} />
@@ -66,7 +71,11 @@ const HomePage = () => {
           onBrandChange={setBrand}
           onTypeChange={setCarType}
         />
-        {isLoading ? <Loading /> : <CarGrid cars={filteredCars} />}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <CarGrid ref={targetRef} cars={filteredCars} />
+        )}
       </div>
     </div>
   );

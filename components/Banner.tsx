@@ -1,9 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 
-export default function Banner() {
+export default function Banner({ handleScroll }: { handleScroll: () => void }) {
   return (
     <section className="bg-blue-50 w-full">
       <div className="max-w-6xl flex flex-col-reverse md:flex-row items-center justify-between py-12 md:py-20 mx-auto">
@@ -20,16 +19,12 @@ export default function Banner() {
             your disposal, we&apos;ve got you covered.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
-            <Link href="/reservation">
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded shadow">
-                Get your car today
-              </button>
-            </Link>
-            <Link href="#car-grid">
-              <span className="text-sky-700 hover:underline font-medium flex items-center">
-                See all cars →
-              </span>
-            </Link>
+            <button
+              onClick={handleScroll}
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded shadow"
+            >
+              Get your car today
+            </button>
           </div>
         </div>
 

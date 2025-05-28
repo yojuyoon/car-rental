@@ -5,6 +5,7 @@ import { Car, Order } from '../../../types/types';
 import ReservationForm from '../../../components/ReservationForm';
 import OrderConfirmation from '../../../components/OrderConfirmation';
 import 'react-datepicker/dist/react-datepicker.css';
+import NoCar from '@/components/NoCar';
 
 export default function ReservationPage({
   params,
@@ -31,23 +32,14 @@ export default function ReservationPage({
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
-  // 차량을 클릭하지 않고 직접 접근한 경우
   if (!car) {
-    return (
-      <div className="max-w-2xl mx-auto mt-12 text-center">
-        <h2 className="text-xl font-semibold">No car selected</h2>
-        <p className="text-gray-600">
-          Please choose a car on the homepage first.
-        </p>
-      </div>
-    );
+    return <NoCar />;
   }
 
   return (
     <div className="max-w-2xl mx-auto mt-10 px-4 pb-10 pt-16">
       <h2 className="text-2xl font-bold mb-4 text-sky-800">Reservation</h2>
 
-      {/* 차량 정보 표시 */}
       <div className="border rounded p-4 mb-6 bg-gray-50">
         <p>
           <strong>Brand:</strong> {car.brand}

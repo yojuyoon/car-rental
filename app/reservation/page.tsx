@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLastCarStore } from '@/stores/lastCarStore';
+import NoCar from '@/components/NoCar';
 
 export default function ReservationIndexPage() {
   const router = useRouter();
@@ -14,12 +15,5 @@ export default function ReservationIndexPage() {
     }
   }, [lastVin, router]);
 
-  return (
-    <div className="max-w-2xl mx-auto mt-12 text-center">
-      <h2 className="text-xl font-semibold">No car selected</h2>
-      <p className="text-gray-600">
-        Please select a car from the homepage first to make a reservation.
-      </p>
-    </div>
-  );
+  return <NoCar />;
 }
