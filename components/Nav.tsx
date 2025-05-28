@@ -5,7 +5,6 @@ import { useLastCarStore } from '@/stores/lastCarStore';
 
 export default function Nav() {
   const lastVin = useLastCarStore((state) => state.lastVin);
-  console.log(lastVin);
   return (
     <header className="bg-white shadow fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto flex justify-between items-center py-2 px-6 max-w-7xl">
