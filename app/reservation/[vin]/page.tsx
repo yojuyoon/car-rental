@@ -3,9 +3,9 @@ import { use } from 'react';
 import { useEffect, useState } from 'react';
 import { Car, Order } from '../../../types/types';
 import ReservationForm from '../../../components/ReservationForm';
-import OrderConfirmation from '../../../components/OrderConfirmation';
 import 'react-datepicker/dist/react-datepicker.css';
 import NoCar from '@/components/NoCar';
+import ThankYou from '../../../components/ThankYou';
 
 export default function ReservationPage({
   params,
@@ -13,18 +13,23 @@ export default function ReservationPage({
   params: Promise<{ vin: string }>;
 }) {
   const { vin } = use(params);
-
   const [car, setCar] = useState<Car | null>(null);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     if (!vin) return;
 
-    fetch('/data/cars.json')
+    const saved = localStorage.getItem(`reservation_${vin}`);
+    if (saved) {
+      setShowForm(true); // 저장된 데이터가 있다면 바로 폼 표시
+    }
+
+    fetch('/api/cars')
       .then((res) => res.json())
       .then((data) => {
-        const selected = data.cars.find((c: Car) => c.vin === vin);
+        const selected = data.find((c: Car) => c.vin === vin);
         setCar(selected || null);
       })
       .finally(() => setLoading(false));
@@ -63,9 +68,18 @@ export default function ReservationPage({
           Sorry, this car is no longer available. Please choose another one.
         </div>
       ) : !order ? (
-        <ReservationForm car={car} onSubmitted={(order) => setOrder(order)} />
+        showForm ? (
+          <ReservationForm car={car} onSubmitted={(order) => setOrder(order)} />
+        ) : (
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded shadow"
+          >
+            Start Reservation
+          </button>
+        )
       ) : (
-        <OrderConfirmation order={order} />
+        <ThankYou order={order} />
       )}
     </div>
   );

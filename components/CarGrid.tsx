@@ -10,7 +10,11 @@ export default function CarGrid({
   ref: React.RefObject<HTMLDivElement | null>;
 }) {
   return (
-    <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+      id="car-list"
+      ref={ref}
+      className="grid grid-cols-1 md:grid-cols-3 gap-6"
+    >
       {cars.length > 0 ? (
         cars.map((car) => <CarCard key={car.vin} car={car} />)
       ) : (

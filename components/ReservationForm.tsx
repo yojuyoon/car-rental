@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Car, Order } from '../types/types';
 import { useReservationStore } from '@/stores/reservationStore';
 import StartDatePicker from './StartDatePicker';
-
+import { toast } from 'react-toastify';
 interface ReservationFormProps {
   car: Car;
   onSubmitted: (order: Order) => void;
@@ -29,8 +29,10 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     setValue,
     reset,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: {
       rentalDays: 1,
     },
@@ -73,20 +75,23 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     const result = await res.json();
 
     if (res.ok && result.orderId) {
+      toast.success('Your reservation was submitted successfully!');
       localStorage.removeItem(`reservation_${car.vin}`);
+      localStorage.removeItem('last-car-storage');
       setOrderId(result.orderId);
       onSubmitted(order);
     } else {
-      alert('Failed to submit order.');
+      toast.error('Failed to submit order.');
     }
   };
 
   const handleCancel = () => {
     localStorage.removeItem(`reservation_${car.vin}`);
+    localStorage.removeItem('last-car-storage');
     reset();
     window.location.href = '/';
   };
-
+  console.log(errors);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <h2 className="text-xl font-semibold text-sky-800">
@@ -102,35 +107,55 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
 
       <input
         className="w-full p-2 border rounded"
-        {...register('phone', { required: true })}
+        {...register('phone', {
+          required: 'Phone is required',
+          pattern: {
+            value: /^[0-9]{9,15}$/,
+            message: 'Enter a valid phone number',
+          },
+        })}
         placeholder="Phone number"
       />
-      {errors.phone && <span className="text-red-500">Phone is required</span>}
+      {errors.phone && (
+        <span className="text-red-500">{errors.phone.message}</span>
+      )}
       <div>
         <input
           className="w-full p-2 border rounded"
           type="email"
-          {...register('email', { required: true })}
+          {...register('email', {
+            required: 'Email is required',
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: 'Invalid email address',
+            },
+          })}
           placeholder="Email"
         />
         {errors.email && (
-          <span className="text-red-500">Email is required</span>
+          <span className="text-red-500">{errors.email.message}</span>
         )}
       </div>
       <div>
         <input
           className="w-full p-2 border rounded"
-          {...register('licenseNumber', { required: true })}
+          {...register('licenseNumber', {
+            required: 'License number is required',
+            minLength: {
+              value: 5,
+              message: 'Too short to be a license number',
+            },
+          })}
           placeholder="Driver's license number"
         />
         {errors.licenseNumber && (
-          <p className="text-red-500">License number is required</p>
+          <p className="text-red-500">{errors.licenseNumber.message}</p>
         )}
       </div>
       <div>
         <StartDatePicker name="startDate" control={control} />
         {errors.startDate && (
-          <p className="text-red-500">Start date is required</p>
+          <p className="text-red-500">{errors.startDate.message}</p>
         )}
       </div>
 
@@ -138,28 +163,38 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
         type="number"
         className="w-full p-2 border rounded"
         min={1}
-        {...register('rentalDays', { required: true, min: 1 })}
+        {...register('rentalDays', {
+          required: 'Rental days is required',
+          min: {
+            value: 1,
+            message: 'Rental days must be at least 1',
+          },
+        })}
         placeholder="Rental days"
       />
       {errors.rentalDays && (
-        <span className="text-red-500">Rental days must be at least 1</span>
+        <span className="text-red-500">{errors.rentalDays.message}</span>
       )}
-
-      <p className="text-xl border-t pt-2">
-        Total Price: <strong>${totalPrice}</strong>
-      </p>
+      {isValid && (
+        <p className="text-xl border-t pt-2">
+          Total Price: <strong>${totalPrice}</strong>
+        </p>
+      )}
 
       <div className="flex gap-4">
         <button
+          disabled={!isValid}
           type="submit"
-          className="bg-sky-600 text-white px-4 py-2 rounded"
+          className={`px-4 py-2 rounded text-white ${
+            isValid ? 'bg-sky-600' : 'bg-gray-300 cursor-not-allowed'
+          }`}
         >
           Submit
         </button>
         <button
           type="button"
           onClick={handleCancel}
-          className="bg-gray-400 text-white px-4 py-2 rounded"
+          className="bg-gray-800 text-white px-4 py-2 rounded"
         >
           Cancel
         </button>
