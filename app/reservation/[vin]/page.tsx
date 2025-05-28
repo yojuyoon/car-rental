@@ -6,6 +6,7 @@ import ReservationForm from '../../../components/ReservationForm';
 import 'react-datepicker/dist/react-datepicker.css';
 import NoCar from '@/components/NoCar';
 import ThankYou from '../../../components/ThankYou';
+import Loading from '@/components/Loading';
 
 export default function ReservationPage({
   params,
@@ -35,7 +36,7 @@ export default function ReservationPage({
       .finally(() => setLoading(false));
   }, [vin]);
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return <Loading />;
 
   if (!car) {
     return <NoCar />;
