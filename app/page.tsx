@@ -6,8 +6,10 @@ import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import CarGrid from '../components/CarGrid';
 import Banner from '@/components/Banner';
+import Loading from '@/components/Loading';
 
 const HomePage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [keyword, setKeyword] = useState('');
@@ -15,11 +17,15 @@ const HomePage = () => {
   const [carType, setCarType] = useState('');
 
   useEffect(() => {
-    fetch('/data/cars.json')
+    fetch('/api/cars')
       .then((res) => res.json())
       .then((data) => {
-        setCars(data.cars);
-        setFilteredCars(data.cars);
+        setCars(data);
+        setIsLoading(false);
+        setFilteredCars(data);
+      })
+      .catch((err) => {
+        console.error('Failed to load cars:', err);
       });
   }, []);
 
@@ -49,17 +55,19 @@ const HomePage = () => {
   }, [keyword, brand, carType, cars]);
 
   return (
-    <div className="max-w-6xl mx-auto py-8">
+    <div className="mx-auto py-8">
       <Banner />
-      <h1 className="text-2xl font-bold mb-4">Available Cars</h1>
-      <SearchBar keyword={keyword} onKeywordChange={setKeyword} cars={cars} />
-      <FilterPanel
-        brand={brand}
-        carType={carType}
-        onBrandChange={setBrand}
-        onTypeChange={setCarType}
-      />
-      <CarGrid cars={filteredCars} />
+      <div className="max-w-6xl mx-auto mt-10">
+        <h1 className="text-2xl text-sky-700 font-bold mb-4">Available Cars</h1>
+        <SearchBar keyword={keyword} onKeywordChange={setKeyword} cars={cars} />
+        <FilterPanel
+          brand={brand}
+          carType={carType}
+          onBrandChange={setBrand}
+          onTypeChange={setCarType}
+        />
+        {isLoading ? <Loading /> : <CarGrid cars={filteredCars} />}
+      </div>
     </div>
   );
 };

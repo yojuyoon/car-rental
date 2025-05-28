@@ -4,7 +4,7 @@
       "carType": "Sedan",
       "brand": "Toyota",
       "carModel": "Corolla",
-      "image": "https://thenounproject.com/icon/ford-mustang-gt-4369703/",
+      "image": "https://images.pexels.com/photos/29458514/pexels-photo-29458514/free-photo-of-white-sedan-parked-outdoors-on-dirt-road.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       "yearOfManufacture": 2014,
       "mileage": "30,000 km",
       "fuelType": "Gasoline",
@@ -17,7 +17,7 @@
       "carType": "SUV",
       "brand": "Honda",
       "carModel": "CR-V",
-      "image": "https://thenounproject.com/icon/car-2087570/",
+      "image": "https://images.pexels.com/photos/6894420/pexels-photo-6894420.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       "yearOfManufacture": 2001,
       "mileage": "45,000 km",
       "fuelType": "Gasoline",
@@ -30,7 +30,7 @@
       "carType": "Coupe",
       "brand": "Ford",
       "carModel": "Mustang",
-      "image": "https://thenounproject.com/icon/ford-mustang-gt500-1965-1763854/",
+      "image": "https://images.pexels.com/photos/544542/pexels-photo-544542.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       "yearOfManufacture": 2010,
       "mileage": "15,000 km",
       "fuelType": "Gasoline",
@@ -38,6 +38,59 @@
       "pricePerDay": 120,
       "description": "A powerful and stylish coupe offering an exhilarating driving experience.",
       "vin": "1FA6P8TH6J5134567"
+    },
+    {
+      "carType": "Hatchback",
+      "brand": "Hyundai",
+      "carModel": "i30",
+      "image": "https://images.pexels.com/photos/8984923/pexels-photo-8984923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "yearOfManufacture": 2017,
+      "mileage": "28,500 km",
+      "fuelType": "Gasoline",
+      "available": true,
+      "pricePerDay": 55,
+      "description": "Compact and easy to park, great for urban driving.",
+      "vin": "KMHD84LF7HU123789"
+    },
+
+    {
+      "carType": "Wagon",
+      "brand": "Subaru",
+      "carModel": "Outback",
+      "image": "https://images.pexels.com/photos/15928567/pexels-photo-15928567/free-photo-of-a-car-on-the-road.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "yearOfManufacture": 2016,
+      "mileage": "60,000 km",
+      "fuelType": "Diesel",
+      "available": false,
+      "pricePerDay": 75,
+      "description": "Perfect for road trips with all-wheel drive and lots of cargo space.",
+      "vin": "4S4BSBNC5G3214567"
+    },
+    {
+      "carType": "Electric",
+      "brand": "Tesla",
+      "carModel": "Model 3",
+      "image": "https://images.pexels.com/photos/3954401/pexels-photo-3954401.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "yearOfManufacture": 2021,
+      "mileage": "10,000 km",
+      "fuelType": "Electric",
+      "available": true,
+      "pricePerDay": 150,
+      "description": "Silent, smart, and sustainable — enjoy next-generation driving.",
+      "vin": "5YJ3E1EA7MF123456"
+    },
+    {
+      "carType": "Hatchback",
+      "brand": "Toyota",
+      "carModel": "Yaris",
+      "image": "https://images.pexels.com/photos/3874330/pexels-photo-3874330.jpeg",
+      "yearOfManufacture": 2019,
+      "mileage": "22,000 km",
+      "fuelType": "Gasoline",
+      "available": true,
+      "pricePerDay": 52,
+      "description": "A compact hatchback ideal for city driving with great fuel economy.",
+      "vin": "JTDBT923X91098765"
     }
   ]
 }

@@ -1,18 +1,25 @@
 import { useForm } from 'react-hook-form';
 import { Order } from '../types/types';
+import { useReservationStore } from '@/stores/reservationStore';
 
 interface OrderConfirmationProps {
   order: Order;
 }
 
 const OrderConfirmation: React.FC<OrderConfirmationProps> = ({ order }) => {
+  const { orderId } = useReservationStore();
   const { handleSubmit } = useForm();
 
   const onConfirm = async () => {
+    if (!orderId) {
+      alert('No order ID found.');
+      return;
+    }
+
     const res = await fetch('/api/confirm', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...order, status: 'confirmed' }),
+      body: JSON.stringify({ orderId }),
     });
 
     if (res.ok) {

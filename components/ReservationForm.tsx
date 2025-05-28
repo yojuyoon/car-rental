@@ -36,7 +36,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     },
   });
 
-  const { forms, setForm, clearForm } = useReservationStore();
+  const { forms, setForm, clearForm, setOrderId } = useReservationStore();
   const saved = forms[car.vin];
   const rentalDays = watch('rentalDays') || 1;
   const totalPrice = car.pricePerDay * rentalDays;
@@ -51,7 +51,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     }
   }, [car.vin, setValue]);
 
-  // localStorage 저장 감지
   useEffect(() => {
     const subscription = watch((values) => {
       localStorage.setItem(`reservation_${car.vin}`, JSON.stringify(values));
@@ -72,8 +71,11 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
       body: JSON.stringify(order),
     });
 
-    if (res.ok) {
+    const result = await res.json();
+
+    if (res.ok && result.orderId) {
       localStorage.removeItem(`reservation_${car.vin}`);
+      setOrderId(result.orderId);
       onSubmitted(order);
     } else {
       alert('Failed to submit order.');
@@ -105,27 +107,33 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
         placeholder="Phone number"
       />
       {errors.phone && <span className="text-red-500">Phone is required</span>}
-
-      <input
-        className="w-full p-2 border rounded"
-        type="email"
-        {...register('email', { required: true })}
-        placeholder="Email"
-      />
-      {errors.email && <span className="text-red-500">Email is required</span>}
-
-      <input
-        className="w-full p-2 border rounded"
-        {...register('licenseNumber', { required: true })}
-        placeholder="Driver's license number"
-      />
-      {errors.licenseNumber && (
-        <span className="text-red-500">License number is required</span>
-      )}
-      <StartDatePicker name="startDate" control={control} />
-      {errors.startDate && (
-        <span className="text-red-500">Start date is required</span>
-      )}
+      <div>
+        <input
+          className="w-full p-2 border rounded"
+          type="email"
+          {...register('email', { required: true })}
+          placeholder="Email"
+        />
+        {errors.email && (
+          <span className="text-red-500">Email is required</span>
+        )}
+      </div>
+      <div>
+        <input
+          className="w-full p-2 border rounded"
+          {...register('licenseNumber', { required: true })}
+          placeholder="Driver's license number"
+        />
+        {errors.licenseNumber && (
+          <p className="text-red-500">License number is required</p>
+        )}
+      </div>
+      <div>
+        <StartDatePicker name="startDate" control={control} />
+        {errors.startDate && (
+          <p className="text-red-500">Start date is required</p>
+        )}
+      </div>
 
       <input
         type="number"
@@ -138,7 +146,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
         <span className="text-red-500">Rental days must be at least 1</span>
       )}
 
-      <p>
+      <p className="text-xl border-t pt-2">
         Total Price: <strong>${totalPrice}</strong>
       </p>
 

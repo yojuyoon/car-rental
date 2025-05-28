@@ -1,22 +1,21 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
-
-const ordersFile = path.join(process.cwd(), 'public', 'data', 'orders.json');
+import clientPromise from '@/lib/mongodb';
 
 export async function POST(req: Request) {
   try {
-    const newOrder = await req.json();
+    const data = await req.json();
+    const client = await clientPromise;
+    const db = client.db('driveToday');
+    const result = await db.collection('orders').insertOne(data);
 
-    const fileData = await fs.readFile(ordersFile, 'utf-8');
-    const orders = JSON.parse(fileData);
-
-    orders.push(newOrder);
-    await fs.writeFile(ordersFile, JSON.stringify(orders, null, 2));
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json(
+      { success: true, orderId: result.insertedId },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error saving order:', error);
-    return NextResponse.json({ success: false }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: (error as Error).message },
+      { status: 500 }
+    );
   }
 }

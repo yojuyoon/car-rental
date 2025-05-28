@@ -13,15 +13,18 @@ type ReservationFormState = {
 };
 
 interface ReservationStore {
+  orderId: string | null;
   forms: ReservationFormState;
   setForm: (vin: string, form: ReservationFormState[string]) => void;
   clearForm: (vin: string) => void;
+  setOrderId: (id: string) => void;
 }
 
 export const useReservationStore = create<ReservationStore>()(
   persist(
     (set, get) => ({
       forms: {},
+      orderId: null,
       setForm: (vin, form) =>
         set((state) => ({
           forms: {
@@ -35,6 +38,7 @@ export const useReservationStore = create<ReservationStore>()(
           delete updated[vin];
           return { forms: updated };
         }),
+      setOrderId: (id: string) => set({ orderId: id }),
     }),
     {
       name: 'reservation-form-storage',

@@ -46,7 +46,7 @@ export default function ReservationPage({
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 px-4">
+    <div className="max-w-2xl mx-auto mt-10 px-4 pb-10 pt-16">
       <h2 className="text-2xl font-bold mb-4 text-sky-800">Reservation</h2>
 
       {/* 차량 정보 표시 */}
@@ -59,9 +59,6 @@ export default function ReservationPage({
         </p>
         <p>
           <strong>Type:</strong> {car.carType}
-        </p>
-        <p>
-          <strong>Year:</strong> {car.year}
         </p>
         <p>
           <strong>Fuel:</strong> {car.fuelType}

@@ -1,35 +1,41 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { MongoClient, ObjectId } from 'mongodb';
 
-const ordersFile = path.join(process.cwd(), 'public', 'data', 'orders.json');
+const uri = process.env.MONGODB_URI!;
+const client = new MongoClient(uri);
 
 export async function POST(req: Request) {
   try {
-    const updatedOrder = await req.json();
-    const { vin, email } = updatedOrder;
+    const { orderId } = await req.json();
 
-    const fileData = await fs.readFile(ordersFile, 'utf-8');
-    const orders = JSON.parse(fileData);
+    if (!orderId) {
+      return NextResponse.json(
+        { success: false, message: 'Missing orderId' },
+        { status: 400 }
+      );
+    }
 
-    const index = orders.findIndex(
-      (order: any) => order.vin === vin && order.email === email
+    await client.connect();
+    const db = client.db('driveToday');
+    const ordersCollection = db.collection('orders');
+
+    const result = await ordersCollection.updateOne(
+      { _id: new ObjectId(orderId) },
+      { $set: { status: 'confirmed' } }
     );
 
-    if (index === -1) {
+    if (result.matchedCount === 0) {
       return NextResponse.json(
         { success: false, message: 'Order not found' },
         { status: 404 }
       );
     }
 
-    orders[index] = { ...orders[index], status: 'confirmed' };
-
-    await fs.writeFile(ordersFile, JSON.stringify(orders, null, 2));
-
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error confirming order:', error);
     return NextResponse.json({ success: false }, { status: 500 });
+  } finally {
+    await client.close();
   }
 }
