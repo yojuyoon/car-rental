@@ -1,7 +1,7 @@
 import { useLastCarStore } from '@/stores/lastCarStore';
 import { Car } from '@/types/types';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const CarCard = ({ car }: { car: Car }) => {
   const router = useRouter();
@@ -16,9 +16,11 @@ const CarCard = ({ car }: { car: Car }) => {
 
   return (
     <div className="border rounded p-4 shadow">
-      <img
+      <Image
         src={car.image}
         alt={car.carModel}
+        width={300}
+        height={200}
         className="w-full h-40 mb-2 object-cover"
       />
       <h3 className="text-xl font-bold">

@@ -36,8 +36,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
     },
   });
 
-  const { forms, setForm, clearForm, setOrderId } = useReservationStore();
-  const saved = forms[car.vin];
+  const { setOrderId } = useReservationStore();
   const rentalDays = watch('rentalDays') || 1;
   const totalPrice = car.pricePerDay * rentalDays;
 

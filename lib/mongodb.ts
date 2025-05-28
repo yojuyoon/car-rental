@@ -1,17 +1,17 @@
 // lib/mongodb.ts
+
 import { MongoClient } from 'mongodb';
+
+declare global {
+  // globalThis 타입 확장
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
+}
 
 const uri = process.env.MONGODB_URI!;
 const options = {};
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
-
-declare global {
-  var _mongoClientPromise: Promise<MongoClient>;
-}
-
-console.log(process.env.MONGODB_URI);
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Please add your Mongo URI to .env.local');

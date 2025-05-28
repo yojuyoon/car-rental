@@ -15,9 +15,9 @@ export default function Banner() {
             <span className="text-orange-500">DriveToday.</span>
           </h1>
           <p className="text-gray-700 mb-6">
-            Whether you're planning a road trip, need a reliable vehicle for a
-            business trip, or just want the convenience of having a car at your
-            disposal, we’ve got you covered.
+            Whether you&apos;re planning a road trip, need a reliable vehicle
+            for a business trip, or just want the convenience of having a car at
+            your disposal, we&apos;ve got you covered.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
             <Link href="/reservation">

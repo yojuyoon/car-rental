@@ -1,7 +1,6 @@
 'use client';
 import { use } from 'react';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Car, Order } from '../../../types/types';
 import ReservationForm from '../../../components/ReservationForm';
 import OrderConfirmation from '../../../components/OrderConfirmation';
@@ -12,7 +11,6 @@ export default function ReservationPage({
 }: {
   params: Promise<{ vin: string }>;
 }) {
-  const router = useRouter();
   const { vin } = use(params);
 
   const [car, setCar] = useState<Car | null>(null);
